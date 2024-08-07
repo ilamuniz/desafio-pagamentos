@@ -72,15 +72,16 @@ Configurações do banco MySQL no arquivo ***src/main/resources/application.prop
 
 ````
 CREATE TABLE `Cartao` (
-	`id` int NOT NULL AUTO_INCREMENT,
-	`nome` VARCHAR(50) NOT NULL,
-	`cpf` VARCHAR(14) NOT NULL,
+	`numero_do_pagamento` int NOT NULL AUTO_INCREMENT,
+	`tipo_de_pessoa` int NOT NULL,
+	`cpf_cnpj` VARCHAR(14) NOT NULL,
 	`pagamento` decimal(6,2) NOT NULL,
 	`nome_do_titular` VARCHAR(50) NOT NULL,
-	`numero_do_cartao` VARCHAR(16) NOT NULL,
-	`data_de_expiracao` datetime NOT NULL,
-	`codigo_de_seguranca` int NOT NULL,
-	PRIMARY KEY(`id`)) ENGINE=InnoDB;
+	`numero_do_cartao` VARCHAR(19) NOT NULL,
+	`mes_vencimento` int NOT NULL,
+	`ano_vencimento` int NOT NULL,
+	`codigo_de_seguranca` VARCHAR(4) NOT NULL,
+	PRIMARY KEY(`numero_do_pagamento`)) ENGINE=InnoDB;
 ````
 
 **Obs.:** Está configurado também um banco de dados H2 que será usado para testes.
@@ -89,19 +90,22 @@ CREATE TABLE `Cartao` (
 
 _NOTA:_ Teste realizado no Insomnia.
 
+>**Obs:** o atributo tipoPessoa aceita valor 1 para Pessoa Física e 2 para Pessoa Jurídica.
+
 ### Cadastrando dados (**POST**)
 
 As requisições enviadas para a API via método _POST_ devem ser em formato _JSON_. Exemplo de requisição enviada para a API:
 
 ````
 {
-  "nome": "João",
-  "cpf": "99999999999",
-  "pagamento": 250.50,
-  "nomeTitular": "João Pedro",
-  "numeroDoCartao": "12345678910",
-  "dataDeExpiracao": "2028-08-01T00:00:00Z",
-  "codigoDeSeguranca": 123
+  "tipoPessoa": 1,
+  "cpfOuCnpj": "22222222222",
+  "pagamento": 300.00,
+  "nomeTitular": "Richard Luís",
+  "numeroDoCartao": "1012345678910",
+  "mesVencimento": 8,
+  "anoVencimento": 2028,
+  "codigoDeSeguranca": "789"
 }
 ````
 Como resposta, deve ser retornado o status **201 - Created**. Ao fazer uma requisição _GET_ logo em seguida, ele deve retornar o status **200** e o seguinte resultado:
@@ -109,14 +113,15 @@ Como resposta, deve ser retornado o status **201 - Created**. Ao fazer uma requi
 ````
 [
 	{
-		"codigoDeSeguranca": 123,
-		"cpf": "99999999999",
-		"dataDeExpiracao": "2028-08-01T00:00:00Z[UTC]",
-		"id": 1,
-		"nome": "João",
-		"nomeTitular": "João Pedro",
-		"numeroDoCartao": "12345678910",
-		"pagamento": 250.50
+		"anoVencimento": 2028,
+		"codigoDeSeguranca": "789",
+		"cpfOuCnpj": "22222222222",
+		"mesVencimento": 8,
+		"nomeTitular": "Richard Luís",
+		"numeroDoCartao": "1012345678910",
+		"numeroPagamento": 1,
+		"pagamento": 300.00,
+		"tipoPessoa": 1
 	}
 ]
 ````
@@ -127,13 +132,14 @@ Podemos inserir mais um novo conjunto de dados pelo _POST_ como no exemplo a seg
 
 ````
 {
-  "nome": "Maria",
-  "cpf": "11111111111",
-  "pagamento": 380.00,
-  "nomeTitular": "Maria Sousa",
-  "numeroDoCartao": "10123456789",
-  "dataDeExpiracao": "2032-09-01T00:00:00Z",
-  "codigoDeSeguranca": 456
+  "tipoPessoa": 2,
+  "cpfOuCnpj": "44444444444444",
+  "pagamento": 3800.00,
+  "nomeTitular": "Loja 504",
+  "numeroDoCartao": "2345678910504",
+  "mesVencimento": 11,
+  "anoVencimento": 2032,
+  "codigoDeSeguranca": "123"
 }
 ````
 Retornando com status **201** . Ao fazer uma nova requisição _GET_, o resultado esperado deve ser:
@@ -141,24 +147,26 @@ Retornando com status **201** . Ao fazer uma nova requisição _GET_, o resultad
 ````
 [
 	{
-		"codigoDeSeguranca": 123,
-		"cpf": "99999999999",
-		"dataDeExpiracao": "2028-08-01T00:00:00Z[UTC]",
-		"id": 1,
-		"nome": "João",
-		"nomeTitular": "João Pedro",
-		"numeroDoCartao": "12345678910",
-		"pagamento": 250.50
+		"anoVencimento": 2028,
+		"codigoDeSeguranca": "789",
+		"cpfOuCnpj": "22222222222",
+		"mesVencimento": 8,
+		"nomeTitular": "Richard Luís",
+		"numeroDoCartao": "1012345678910",
+		"numeroPagamento": 1,
+		"pagamento": 300.00,
+		"tipoPessoa": 1
 	},
 	{
-		"codigoDeSeguranca": 456,
-		"cpf": "11111111111",
-		"dataDeExpiracao": "2032-09-01T00:00:00Z[UTC]",
-		"id": 2,
-		"nome": "Maria",
-		"nomeTitular": "Maria Sousa",
-		"numeroDoCartao": "10123456789",
-		"pagamento": 380.00
+		"anoVencimento": 2032,
+		"codigoDeSeguranca": "123",
+		"cpfOuCnpj": "44444444444444",
+		"mesVencimento": 11,
+		"nomeTitular": "Loja 504",
+		"numeroDoCartao": "2345678910504",
+		"numeroPagamento": 2,
+		"pagamento": 3800.00,
+		"tipoPessoa": 2
 	}
 ]
 ````
@@ -174,14 +182,15 @@ A resposta esperada deve ser semelhante a seguinte:
 
 ````
 {
-	"codigoDeSeguranca": 123,
-	"cpf": "99999999999",
-	"dataDeExpiracao": "2028-08-01T00:00:00Z[UTC]",
-	"id": 1,
-	"nome": "João",
-	"nomeTitular": "João Pedro",
-	"numeroDoCartao": "12345678910",
-	"pagamento": 250.50
+	"anoVencimento": 2028,
+	"codigoDeSeguranca": "789",
+	"cpfOuCnpj": "22222222222",
+	"mesVencimento": 8,
+	"nomeTitular": "Richard Luís",
+	"numeroDoCartao": "1012345678910",
+	"numeroPagamento": 1,
+	"pagamento": 300.00,
+	"tipoPessoa": 1
 }
 ````
 
@@ -197,14 +206,15 @@ Como resposta, retornará o status **204 - No content**. Ao fazer uma nova requi
 ````
 [
 	{
-		"codigoDeSeguranca": 456,
-		"cpf": "11111111111",
-		"dataDeExpiracao": "2032-09-01T00:00:00Z[UTC]",
-		"id": 2,
-		"nome": "Maria",
-		"nomeTitular": "Maria Sousa",
-		"numeroDoCartao": "10123456789",
-		"pagamento": 380.00
+		"anoVencimento": 2032,
+		"codigoDeSeguranca": "123",
+		"cpfOuCnpj": "44444444444444",
+		"mesVencimento": 11,
+		"nomeTitular": "Loja 504",
+		"numeroDoCartao": "2345678910504",
+		"numeroPagamento": 2,
+		"pagamento": 3800.00,
+		"tipoPessoa": 2
 	}
 ]
 ````

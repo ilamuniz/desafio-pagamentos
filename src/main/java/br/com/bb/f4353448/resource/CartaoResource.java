@@ -8,7 +8,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.Collections;
 import java.util.List;
 
 @Path("/pagamentos")
@@ -28,8 +27,8 @@ public class CartaoResource {
 
     @GET
     @Path("/{id}")
-    public Cartao listarCartaoPorID(@PathParam("id") int id) {
-        return cartaoService.listarCartaoPorID(id);
+    public Cartao listarCartaoPorID(@PathParam("id") int numeroPagamento) {
+        return cartaoService.listarCartaoPorID(numeroPagamento);
     }
 
     @POST
@@ -42,8 +41,8 @@ public class CartaoResource {
 
     @DELETE
     @Path("/{id}")
-    public Response deletarCartao(@PathParam("id") int id) {
-        cartaoService.deletarCartao(id);
+    public Response deletarCartao(@PathParam("id") int numeroPagamento) {
+        cartaoService.deletarCartao(numeroPagamento);
         return Response.noContent().build();
     }
 }

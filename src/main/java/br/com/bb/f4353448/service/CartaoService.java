@@ -8,7 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
-import java.util.Collections;
+import java.time.Year;
 import java.util.List;
 
 @ApplicationScoped
@@ -28,8 +28,8 @@ public class CartaoService {
         return cartaoRepository.listAll();
     }
 
-    public Cartao listarCartaoPorID(int id) {
-        return cartaoRepository.findById((long) id);
+    public Cartao listarCartaoPorID(int numeroPagamento) {
+        return cartaoRepository.findById((long) numeroPagamento);
     }
 
     public Cartao inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
@@ -39,23 +39,23 @@ public class CartaoService {
         return cartao;
     }
 
-    public void deletarCartao(int id) {
-        cartaoRepository.deleteById((long) id);
+    public void deletarCartao(int numeroPagamento) {
+        cartaoRepository.deleteById((long) numeroPagamento);
     }
 
     private void validarCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
-        // Campo nome não pode ser nulo
-        if(cartao.getNome() == null || cartao.getNome().isEmpty()) {
-            throw new ErrosDeSistema.CampoNaoInformado("Por favor, informe o nome do comprador.");
+        // Campo Tipo de pessoa só aceita 1 - Pessoa Física ou 2 - Pessoa Jurídica
+        if (cartao.getTipoPessoa() != 1 && cartao.getTipoPessoa() != 2) {
+            throw new ErrosDeSistema.CampoNaoInformado("Por favor, informe o tipo correto - 1 (para Pessoa Física) ou 2 (para Pessoa Jurídica)");
         }
-        // Campo CPF não pode ser nulo e só aceita 11 ou 14 números (no caso, se for CNPJ)
-        if(cartao.getCpf() == null || cartao.getCpf().isEmpty()) {
-            throw new ErrosDeSistema.CampoNaoInformado("Por favor, informe o CPF do comprador.");
+        // Campo CPF ou CNPJ não pode ser nulo e só aceita 11 ou 14 números (no caso, se for CNPJ)
+        if(cartao.getCpfOuCnpj() == null || cartao.getCpfOuCnpj().isEmpty()) {
+            throw new ErrosDeSistema.CampoNaoInformado("Por favor, informe o CPF ou o CNPJ do comprador.");
         }
-        if (!(cartao.getCpf().length() == 11 || cartao.getCpf().length() == 14)) {
+        if (!(cartao.getCpfOuCnpj().length() == 11 || cartao.getCpfOuCnpj().length() == 14)) {
             throw new ErrosDeSistema.PreenchimentoIncorretoCPF("Campo CPF deve conter 11 dígitos para CPF ou 14 dígitos para CNPJ.");
         }
-        if (!cartao.getCpf().matches("\\d+")) {
+        if (!cartao.getCpfOuCnpj().matches("\\d+")) {
             throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencher somente com números.");
         }
         // Campo pagamento não pode ser nulo
@@ -74,15 +74,18 @@ public class CartaoService {
             throw new ErrosDeSistema.PreenchimentoIncorretoNumeroCartao("Não foi possível identificar seu cartão. Digite a numeração completa do cartão.");
         }
         if (!cartao.getNumeroDoCartao().matches("\\d+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencher somente com números.");
+            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencha o número do cartão somente com números.");
         }
-        // Campo data de expiração não pode ser nulo
-        if(cartao.getDataDeExpiracao() == null) {
-            throw new ErrosDeSistema.CampoNaoInformado("Favor, informar uma data válida de expiração do cartão.");
+        // Campos mês e ano de expiração não podem ser nulo
+        if(cartao.getMesVencimento() > 12 || cartao.getMesVencimento() < 0) {
+            throw new ErrosDeSistema.CampoNaoInformado("Favor, informar um mês válido para expiração do cartão.");
         }
-        // Campo código não aceita número com menos de três caracteres
-        if(cartao.getCodigoDeSeguranca() < 100) {
-            throw new ErrosDeSistema.CampoNaoInformado("Por favor, digite o código de segurança do cartão.");
+        if (cartao.getAnoVencimento() < Year.now().getValue()) {
+            throw new ErrosDeSistema.CampoNaoInformado("Favor, informar um ano válido para expiração do cartão");
+        }
+        // Campo código não aceita letras
+        if(!cartao.getCodigoDeSeguranca().matches("\\d+")) {
+            throw new ErrosDeSistema.CampoNaoInformado("Por favor, preencha o CVV somente com números.");
         }
     }
 
