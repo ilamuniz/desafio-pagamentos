@@ -46,7 +46,7 @@ ___
 Clonar o repositório:
 
 ````
-~$ https://fontes.intranet.bb.com.br/f4353448/desafio-pagamentos.git
+~$ https://github.com/ilamuniz/desafio-pagamentos.git
 ````
 Entrar na pasta raiz:
 
