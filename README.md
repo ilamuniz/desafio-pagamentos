@@ -241,3 +241,7 @@ Para gerar a imagem Docker, deve-se digitar o comando abaixo dentro da pasta ond
 ````
 ~$ docker build -t pagamentos: latest .
 ````
+Execute o Docker Compose com o seguinte comando:
+````
+~$ docker-compose up
+````

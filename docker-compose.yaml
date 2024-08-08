@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  app:
+    image: pagamentos:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      QUARKUS_DATASOURCE_JDBC_URL : jdbc:mysql://mysql:3306/pagamentos
+      QUARKUS_DATASOURCE_JDBC_USERNAME : f4353448
+      QUARKUS_DATASOURCE_JDBC_PASSWORD : wsl
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: wsl
+      MYSQL_DATABASE: pagamentos
+      MYSQL_USER: f4353448
+      MYSQL_PASSWORD: wsl
+    ports:
+      - "3306:3306"
