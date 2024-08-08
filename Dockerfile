@@ -1,37 +1,18 @@
-# INFORMA QUAL IMAGEM SERÁ USADA COMO BASE NA FASE DE BUILD
-FROM openjdk:17-jdk AS build
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.19
 
-# DEFINE O DIRETÓRIO DE TRABALHO DENTRO DO CONTÊINER
-WORKDIR /workspace
+ENV LANGUAGE='en_US:en'
 
-# COPIA O ARQUIVO POM.XML E AS DEPENDÊNCIAS DO MAVEN
-COPY pom.xml ./
-COPY mvnw ./
-COPY .mvn .mvn
+RUN mvn package
 
-# BAIXA AS DEPENDÊNCIAS DO MAVEN
-RUN ./mvnw dependency:go-offline
+# We make four distinct layers so if there are application changes the library layers can be re-used
+COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 target/quarkus-app/*.jar /deployments/
+COPY --chown=185 target/quarkus-app/app/ /deployments/app/
+COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
 
-# COPIA O RESTANTE DO PROJETO
-COPY src ./src
-
-# COMPILA O PROJETO
-RUN ./mvnw clean package -DskipTests
-
-# INFORMA QUAL IMAGEM SERÁ USADA COMO BASE NA FASE DE RUNTIME
-FROM openjdk:17-jdk-slim
-
-# DEFINE DIRETÓRIO DE TRABALHO DENTRO DO CONTÊINER
-WORKDIR /app
-
-# COPIA O JAR GERADO NA FASE DE BUILD PARA O DIRETÓRIO DE TRABALHO
-COPY --from=build /workspace/target/*.jar /app/pagamentos.jar
-
-# EXPÕE A PORTA QUE O SERVIÇO RODARÁ
 EXPOSE 8080
+USER 185
+ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-# DEFINE VARIÁVEIS DE AMBIENTE
-ENV JAVA_OPTS=""
-
-# PONTO DE ENTRADA DO CONTAINER AO EXECUTAR A IMAGEM
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/pagamentos.jar"].0.0.jar"]
+ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]

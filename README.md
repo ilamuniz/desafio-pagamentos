@@ -231,5 +231,13 @@ Possíveis status esperados como resposta das requisições:
 401 (Unauthorized) = o usuário não está autenticado (logado)
 403 (Forbidden) = o usuário não tem permissão de acessar o recurso solicitado
 404 (Not Found) = o servidor não pode encontrar o recurso solicitado
+422 (Unprocessable Entity) = o servidor entendeu a solicitação, mas não consegue processar as instruções
 500 (Internal Server Error) = erro inesperado do servidor
+````
+## Imagem Docker
+
+Para gerar a imagem Docker, deve-se digitar o comando abaixo dentro da pasta onde está o arquivo Dockerfile:
+
+````
+~$ docker build -t pagamentos: latest .
 ````
