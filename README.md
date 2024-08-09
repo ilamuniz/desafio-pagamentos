@@ -239,9 +239,16 @@ Possíveis status esperados como resposta das requisições:
 Para gerar a imagem Docker, deve-se digitar o comando abaixo dentro da pasta onde está o arquivo Dockerfile:
 
 ````
-~$ docker build -t pagamentos: latest .
+~$ docker build -t pagamentos:latest .
 ````
-Execute o Docker Compose com o seguinte comando:
+Para iniciar os contêineres, execute o Docker Compose com o seguinte comando:
 ````
 ~$ docker-compose up
+````
+## Swagger UI
+
+Para poder ver os endpoints e modelos das entidades com seus atributos e respectivos tipos pelo navegador, acesse o endereço:
+
+````
+http://localhost:8080/swagger-ui/
 ````
