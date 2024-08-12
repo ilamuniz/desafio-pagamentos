@@ -252,3 +252,13 @@ Para poder ver os endpoints e modelos das entidades com seus atributos e respect
 ````
 http://localhost:8080/swagger-ui/
 ````
+## Métricas
+
+Para ver as métricas da aplicação, acessar:
+````
+http://localhost:8080/q/metrics
+````
+Para verificar a disponibilidade do banco, acessar:
+````
+http://localhost:8080/q/health
+````
