@@ -21,3 +21,11 @@ services:
       MYSQL_PASSWORD: wsl
     ports:
       - "3306:3306"
+
+  prometheus:
+    image: prom/prometheus:latest
+    command: [ "--config.file=/prometheus-config/prometheus.yml" ]
+    volumes:
+      - ./prometheus-config:/prometheus-config
+    ports:
+      - 9090:9090

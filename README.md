@@ -25,7 +25,6 @@ Utilize o framework Quarkus para criar o microsserviço Java.
 
 - Será avaliado a qualidade do código, a organização, eficiência da solução e boas práticas de programação. Também será observado o cumprimento dos requisitos do desafio.
 - Certifique-se de verificar se o microsserviço valida os dados de pagamento, os armazena corretamente no banco de dados e fornece uma maneira de consultar esses dados posteriormente.
-
 ___
 ## Estrutura Geral do Projeto
 
@@ -44,17 +43,14 @@ ___
 ### Como realizar instalação:
 
 Clonar o repositório:
-
 ````
 ~$ https://github.com/ilamuniz/desafio-pagamentos.git
 ````
 Entrar na pasta raiz:
-
 ````
 ~$ cd desafio-pagamentos
 ````
 Em seguida, executar o comando para gerar o .jar:
-
 ````
 ~$ mvn install quarkus:dev
 ````
@@ -92,7 +88,9 @@ _NOTA:_ Teste realizado no Insomnia.
 
 >**Obs:** o atributo tipoPessoa aceita valor 1 para Pessoa Física e 2 para Pessoa Jurídica.
 
-### Cadastrando dados (**POST**)
+<br>
+<details>
+<summary>Cadastrando dados (POST)</summary>
 
 As requisições enviadas para a API via método _POST_ devem ser em formato _JSON_. Exemplo de requisição enviada para a API:
 
@@ -125,8 +123,10 @@ Como resposta, deve ser retornado o status **201 - Created**. Ao fazer uma requi
 	}
 ]
 ````
-
-### Consultando dados cadastrados (**GET**)
+</details>
+<br>
+<details>
+<summary>Consultando dados cadastrados (GET)</summary>
 
 Podemos inserir mais um novo conjunto de dados pelo _POST_ como no exemplo a seguir:
 
@@ -170,8 +170,10 @@ Retornando com status **201** . Ao fazer uma nova requisição _GET_, o resultad
 	}
 ]
 ````
-
-### Consultando dados por ID (**GET**)
+</details>
+<br>
+<details>
+<summary>Consultando dados por ID (GET)</summary>
 
 Podemos fazer uma busca por id, passando o endereço do endpoint e incluir no final o ID do pagamento cadastrado que se deseja buscar com o método _GET_. No exemplo, o ID buscado é o 1:
 
@@ -193,8 +195,10 @@ A resposta esperada deve ser semelhante a seguinte:
 	"tipoPessoa": 1
 }
 ````
-
-### Deletando dados (**DELETE**)
+</details>
+<br>
+<details>
+<summary>Deletando dados (DELETE)</summary>
 
 Para deletar um pagamento, fazemos un procedimento parecido para buscar por ID, inserindo a URL http://localhost:8080/pagamentos/{id}, substituindo o {id} pelo ID que se deseja deletar, porém escolhendo o método DELETE, como no exemplo:
 
@@ -218,6 +222,7 @@ Como resposta, retornará o status **204 - No content**. Ao fazer uma nova requi
 	}
 ]
 ````
+</details>
 
 ## Status Codes
 
@@ -256,9 +261,9 @@ http://localhost:8080/swagger-ui/
 
 Para ver as métricas da aplicação, acessar:
 ````
-http://localhost:8080/q/metrics
+http://localhost:8080/metrics
 ````
 Para verificar a disponibilidade do banco, acessar:
 ````
-http://localhost:8080/q/health
+http://localhost:8080/health
 ````
