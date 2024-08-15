@@ -267,3 +267,8 @@ Para verificar a disponibilidade do banco, acessar:
 ````
 http://localhost:8080/health
 ````
+## Classe DataGenerator
+
+No caminho **src/main/java/br.com.bb.f4353448/scripts**, existe a classe DataGenerator.
+
+Ao executar essa classe, ela irá adicionar dados aleatórios ao banco a cada segundo. Para pausar, bastar apertar Enter no terminal.
