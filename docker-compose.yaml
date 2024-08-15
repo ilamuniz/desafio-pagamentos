@@ -38,3 +38,10 @@ services:
       - ./prometheus-config:/prometheus-config
     ports:
       - 9090:9090
+
+networks:
+  mysql-db:
+    driver: bridge
+
+volumes:
+  mysql.pagamentos:
