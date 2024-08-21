@@ -88,7 +88,7 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("CVV tem pelo menos três dígitos.");
         }
         if(!cartao.getCodigoDeSeguranca().matches("\\d+")) {
-            throw new ErrosDeSistema.CampoNaoInformado("Por favor, preencha o CVV somente com números.");
+            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencha o CVV somente com números.");
         }
     }
 
