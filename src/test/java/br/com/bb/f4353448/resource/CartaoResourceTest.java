@@ -16,6 +16,18 @@ public class CartaoResourceTest {
     }
 
     @Test
+    public void testcriarPagamentoStatusCode201() {
+        String novoPagamento = "{ \"tipoPessoa\": 2, \"cpfOuCnpj\": \"77777777777777\", \"pagamento\": 3500.00, \"nomeTitular\": \"Empresa 202\", \"numeroDoCartao\": \"1234.5678.9101-112\", \"mesVencimento\": 9, \"anoVencimento\": 2030, \"codigoDeSeguranca\": \"567\"}";
+        RestAssured.given()
+                .body(novoPagamento)
+                .header("Content-Type", "application/json")
+                .when()
+                .post("/pagamentos")
+                .then()
+                .statusCode(201);
+    }
+
+    @Test
     public void dadosNulosStatusCode400() {
         String dadosNulos = "{ \"tipoPessoa\": 0, \"cpfOuCnpj\": \"\", \"pagamento\": 0.00, \"nomeTitular\": \"\", \"numeroDoCartao\": \"\", \"mesVencimento\": 0, \"anoVencimento\": 0, \"codigoDeSeguranca\": \"\" }";
         RestAssured.given()
