@@ -15,6 +15,7 @@ import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import java.util.List;
+import java.util.Optional;
 
 @Path("/pagamentos")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,8 +38,13 @@ public class CartaoResource {
     @Path("/{id}")
     @Counted(name = "listarCartaoPorID_requests_count", description = "Contador de requisicoes para listar dados por ID")
     @Timed(name = "listarCartaoPorID_requests_time", description = "Tempo de requisicoes para listar dados por ID")
-    public Cartao listarCartaoPorID(@PathParam("id") int numeroPagamento) {
-        return cartaoService.listarCartaoPorID(numeroPagamento);
+    public Response listarCartaoPorID(@PathParam("id") int numeroPagamento) {
+        Optional<Cartao> cartao = cartaoService.listarCartaoPorID(numeroPagamento);
+        if (cartao.isPresent()) {
+            return Response.ok(cartao.get()).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @POST

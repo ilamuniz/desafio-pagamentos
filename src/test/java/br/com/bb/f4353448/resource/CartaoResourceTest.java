@@ -2,10 +2,13 @@ package br.com.bb.f4353448.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 public class CartaoResourceTest {
+
+    String novoPagamento = "{ \"tipoPessoa\": 2, \"cpfOuCnpj\": \"77777777777777\", \"pagamento\": 3500.00, \"nomeTitular\": \"Empresa 202\", \"numeroDoCartao\": \"1234.5678.9101-112\", \"mesVencimento\": 9, \"anoVencimento\": 2030, \"codigoDeSeguranca\": \"567\"}";
 
     @Test
     public void statusCodeDaRequisicao200() {
@@ -17,7 +20,6 @@ public class CartaoResourceTest {
 
     @Test
     public void testcriarPagamentoStatusCode201() {
-        String novoPagamento = "{ \"tipoPessoa\": 2, \"cpfOuCnpj\": \"77777777777777\", \"pagamento\": 3500.00, \"nomeTitular\": \"Empresa 202\", \"numeroDoCartao\": \"1234.5678.9101-112\", \"mesVencimento\": 9, \"anoVencimento\": 2030, \"codigoDeSeguranca\": \"567\"}";
         RestAssured.given()
                 .body(novoPagamento)
                 .header("Content-Type", "application/json")
@@ -25,6 +27,38 @@ public class CartaoResourceTest {
                 .post("/pagamentos")
                 .then()
                 .statusCode(201);
+    }
+
+    @Test
+    public void testbuscarPagamentoPorIDStatusCode200() {
+        int id = 1;
+        String getresponseBody = RestAssured.given()
+                .when()
+                .get("/pagamentos/" + id)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        JsonPath jsonPath = new JsonPath(getresponseBody);
+
+        String respostaCpfOuCnpj = jsonPath.getString("cpfOuCnpj");
+        String respostaNumeroDoCartao = jsonPath.getString("numeroDoCartao");
+
+        assert respostaCpfOuCnpj.equals("77777777777777");
+        assert respostaNumeroDoCartao.equals("1234.5678.9101-112");
+    }
+
+    @Test
+    public void testdeletarPagamentoStatusCode204() {
+        int id = 1;
+        RestAssured.given()
+                .when()
+                .delete("/pagamentos/" + id)
+                .then()
+                .statusCode(204);
     }
 
     @Test
