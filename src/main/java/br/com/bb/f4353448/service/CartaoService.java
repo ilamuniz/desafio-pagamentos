@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 @Transactional
@@ -28,8 +29,8 @@ public class CartaoService {
         return cartaoRepository.listAll();
     }
 
-    public Cartao listarCartaoPorID(int numeroPagamento) {
-        return cartaoRepository.findById((long) numeroPagamento);
+    public Optional<Cartao> listarCartaoPorID(int numeroPagamento) {
+        return Optional.ofNullable(cartaoRepository.findById((long) numeroPagamento));
     }
 
     public Cartao inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
