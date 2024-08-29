@@ -33,22 +33,22 @@ public class CartaoService {
         return Optional.ofNullable(cartaoRepository.findById((long) numeroPagamento));
     }
 
-    public Cartao inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
+    public Cartao inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros, ErrosDeSistema.PreenchimentoIncorretoNumeroCartao {
         validarCartao(cartao);
         entityManager.persist(cartao);
         entityManager.flush();
         return cartao;
     }
 
-    public void deletarCartao(int numeroPagamento) {
+    public void deletarCartao(int numeroPagamento) throws ErrosDeSistema.CartaoNaoEncontrado {
         Cartao cartao = entityManager.find(Cartao.class, numeroPagamento);
         if (cartao == null) {
-            throw new ErrosDeSistema.CartaoNaoEncontrado("Cartão com ID " + numeroPagamento + " não encontrado");
+            throw new ErrosDeSistema.CartaoNaoEncontrado(numeroPagamento);
         }
         cartaoRepository.deleteById((long) numeroPagamento);
     }
 
-    private void validarCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
+    private void validarCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros, ErrosDeSistema.PreenchimentoIncorretoNumeroCartao {
         // Campo Tipo de pessoa só aceita 1 - Pessoa Física ou 2 - Pessoa Jurídica
         if (cartao.getTipoPessoa() != 1 && cartao.getTipoPessoa() != 2) {
             throw new ErrosDeSistema.CampoNaoInformado("tipo Pessoa");
@@ -58,10 +58,10 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("CPF ou CNPJ");
         }
         if ((cartao.getTipoPessoa() == 1 && cartao.getCpfOuCnpj().length() != 11) || (cartao.getTipoPessoa() == 2 && cartao.getCpfOuCnpj().length() != 14)) {
-            throw new ErrosDeSistema.PreenchimentoIncorretoCPF("Campo CPF ou CNPJ deve conter 11 dígitos para CPF ou 14 dígitos para CNPJ.");
+            throw new ErrosDeSistema.PreenchimentoIncorretoCPF();
         }
         if (!cartao.getCpfOuCnpj().matches("\\d+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencher somente com números.");
+            throw new ErrosDeSistema.PreencherSomenteNumeros();
         }
         // Campo pagamento não pode ser nulo
         if (cartao.getPagamento() == null) {
@@ -76,10 +76,10 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("número do cartão");
         }
         if (cartao.getNumeroDoCartao().length() < 13 || cartao.getNumeroDoCartao().length() > 19) {
-            throw new ErrosDeSistema.PreenchimentoIncorretoNumeroCartao("Não foi possível identificar seu cartão. Digite a numeração completa do cartão (mínimo de 13 dígitos e máximo de 19 dígitos).");
+            throw new ErrosDeSistema.PreenchimentoIncorretoNumeroCartao();
         }
         if (!cartao.getNumeroDoCartao().matches("[\\d-.]+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencha o número do cartão somente com números, hífen ('-') ou ponto ('.').");
+            throw new ErrosDeSistema.PreencherSomenteNumeros();
         }
         // Campos mês e ano de expiração não podem ser nulo
         if(cartao.getMesVencimento() > 12 || cartao.getMesVencimento() <= 0) {
@@ -93,7 +93,7 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("CVV");
         }
         if(!cartao.getCodigoDeSeguranca().matches("\\d+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros("Por favor, preencha o CVV somente com números.");
+            throw new ErrosDeSistema.PreencherSomenteNumeros();
         }
     }
 
