@@ -41,6 +41,10 @@ public class CartaoService {
     }
 
     public void deletarCartao(int numeroPagamento) {
+        Cartao cartao = entityManager.find(Cartao.class, numeroPagamento);
+        if (cartao == null) {
+            throw new ErrosDeSistema.CartaoNaoEncontrado("Cartão com ID " + numeroPagamento + " não encontrado");
+        }
         cartaoRepository.deleteById((long) numeroPagamento);
     }
 
