@@ -42,4 +42,13 @@ public class ErrosDeSistema {
         }
     }
 
+    public static final class CartaoNaoEncontrado extends WebApplicationException {
+        public CartaoNaoEncontrado(String MSG_ERRO) {
+            super(Response.status(Response.Status.NOT_FOUND)
+                    .entity(MSG_ERRO)
+                    .type("application/json")
+                    .build());
+        }
+    }
+
 }

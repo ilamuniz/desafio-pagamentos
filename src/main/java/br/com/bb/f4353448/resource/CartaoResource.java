@@ -62,7 +62,11 @@ public class CartaoResource {
     @Counted(name = "deletarCartao_requests_count", description = "Contador de requisicoes para deletar dados")
     @Timed(name = "deletarCartao_requests_time", description = "Tempo de requisicoes para deletar dados")
     public Response deletarCartao(@PathParam("id") int numeroPagamento) {
-        cartaoService.deletarCartao(numeroPagamento);
+        try {
+            cartaoService.deletarCartao(numeroPagamento);
+        } catch (ErrosDeSistema.CartaoNaoEncontrado e) {
+            throw new ErrosDeSistema.CartaoNaoEncontrado("Cartão com ID " + numeroPagamento + " não encontrado");
+        }
         return Response.noContent().build();
     }
 
