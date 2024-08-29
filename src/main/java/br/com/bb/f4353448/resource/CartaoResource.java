@@ -50,7 +50,7 @@ public class CartaoResource {
     @POST
     @Counted(name = "inserirCartao_requests_count", description = "Contador de requisicoes para cadastrar dados")
     @Timed(name = "inserirCartao_requests_time", description = "Tempo de requisicoes para cadastrar dados")
-    public Response inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros {
+    public Response inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros, ErrosDeSistema.PreenchimentoIncorretoNumeroCartao {
         Cartao novoCartao = cartaoService.inserirCartao(cartao);
         return Response.status(Response.Status.CREATED)
                 .entity(novoCartao)
@@ -61,12 +61,8 @@ public class CartaoResource {
     @Path("/{id}")
     @Counted(name = "deletarCartao_requests_count", description = "Contador de requisicoes para deletar dados")
     @Timed(name = "deletarCartao_requests_time", description = "Tempo de requisicoes para deletar dados")
-    public Response deletarCartao(@PathParam("id") int numeroPagamento) {
-        try {
-            cartaoService.deletarCartao(numeroPagamento);
-        } catch (ErrosDeSistema.CartaoNaoEncontrado e) {
-            throw new ErrosDeSistema.CartaoNaoEncontrado("Cartão com ID " + numeroPagamento + " não encontrado");
-        }
+    public Response deletarCartao(@PathParam("id") int numeroPagamento) throws ErrosDeSistema.CartaoNaoEncontrado {
+        cartaoService.deletarCartao(numeroPagamento);
         return Response.noContent().build();
     }
 
