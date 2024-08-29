@@ -3,15 +3,18 @@ package br.com.bb.f4353448.exception;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Map;
+
 
 public class ErrosDeSistema {
 
-    public static final class CampoNaoInformado extends WebApplicationException {
-        public CampoNaoInformado(String MSG_ERRO) {
-            super(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(MSG_ERRO)
-                    .type("application/json")
-                    .build());
+    public static final class CampoNaoInformado extends PagamentoException {
+        public static final String MSG_ERRO = "O campo %s não foi informado corretamente.";
+        public static final String COD_ERRO = "400"; // Codigo do erro
+
+        public CampoNaoInformado(String nomeCampo) {
+            super(COD_ERRO, String.format(MSG_ERRO, nomeCampo), Map.of("NOME_CAMPO", nomeCampo));
+
         }
     }
 
