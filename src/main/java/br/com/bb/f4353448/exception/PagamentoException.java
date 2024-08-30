@@ -19,12 +19,12 @@ public class PagamentoException extends Exception implements PagamentoErrorMap {
     }
 
     public PagamentoException(PagamentoError pagamentoError) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage());
+        this(pagamentoError.getCode(), pagamentoError.getMessage());
         this.pagamentoError = pagamentoError;
     }
 
     public PagamentoException(PagamentoError pagamentoError, Object... messageArgs) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage(messageArgs));
+        this(pagamentoError.getCode(), pagamentoError.getMessage(messageArgs));
         this.pagamentoError = pagamentoError;
     }
 
@@ -34,12 +34,12 @@ public class PagamentoException extends Exception implements PagamentoErrorMap {
     }
 
     public PagamentoException(PagamentoError pagamentoError, @NotNull Map<String, String> vars) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage(), vars);
+        this(pagamentoError.getCode(), pagamentoError.getMessage(), vars);
         this.pagamentoError = pagamentoError;
     }
 
     public PagamentoException(PagamentoError pagamentoError, @NotNull Map<String, String> vars, Object... messageArgs) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage(messageArgs), vars);
+        this(pagamentoError.getCode(), pagamentoError.getMessage(messageArgs), vars);
         this.pagamentoError = pagamentoError;
     }
 
@@ -49,12 +49,12 @@ public class PagamentoException extends Exception implements PagamentoErrorMap {
     }
 
     public PagamentoException(PagamentoError pagamentoError, Throwable cause) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage(), cause);
+        this(pagamentoError.getCode(), pagamentoError.getMessage(), cause);
         this.pagamentoError = pagamentoError;
     }
 
     public PagamentoException(PagamentoError pagamentoError, Throwable cause, Object... messageArgs) {
-        this(PagamentoError.getCode(), pagamentoError.getMessage(messageArgs), cause);
+        this(pagamentoError.getCode(), pagamentoError.getMessage(messageArgs), cause);
         this.pagamentoError = pagamentoError;
     }
 
