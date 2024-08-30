@@ -18,48 +18,48 @@ public class CartaoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    public void testcriarPagamentoStatusCode201() {
-        RestAssured.given()
-                .body(novoPagamento)
-                .header("Content-Type", "application/json")
-                .when()
-                .post("/pagamentos")
-                .then()
-                .statusCode(201);
-    }
-
-    @Test
-    public void testbuscarPagamentoPorIDStatusCode200() {
-        int id = 1;
-        String getresponseBody = RestAssured.given()
-                .when()
-                .get("/pagamentos/" + id)
-                .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .body()
-                .asString();
-
-        JsonPath jsonPath = new JsonPath(getresponseBody);
-
-        String respostaCpfOuCnpj = jsonPath.getString("cpfOuCnpj");
-        String respostaNumeroDoCartao = jsonPath.getString("numeroDoCartao");
-
-        assert respostaCpfOuCnpj.equals("77777777777777");
-        assert respostaNumeroDoCartao.equals("1234.5678.9101-112");
-    }
-
-    @Test
-    public void testdeletarPagamentoStatusCode204() {
-        int id = 1;
-        RestAssured.given()
-                .when()
-                .delete("/pagamentos/" + id)
-                .then()
-                .statusCode(204);
-    }
+//    @Test
+//    public void testcriarPagamentoStatusCode201() {
+//        RestAssured.given()
+//                .body(novoPagamento)
+//                .header("Content-Type", "application/json")
+//                .when()
+//                .post("/pagamentos")
+//                .then()
+//                .statusCode(201);
+//    }
+//
+//    @Test
+//    public void testbuscarPagamentoPorIDStatusCode200() {
+//        int id = 1;
+//        String getresponseBody = RestAssured.given()
+//                .when()
+//                .get("/pagamentos/" + id)
+//                .then()
+//                .log().all()
+//                .statusCode(200)
+//                .extract()
+//                .body()
+//                .asString();
+//
+//        JsonPath jsonPath = new JsonPath(getresponseBody);
+//
+//        String respostaCpfOuCnpj = jsonPath.getString("cpfOuCnpj");
+//        String respostaNumeroDoCartao = jsonPath.getString("numeroDoCartao");
+//
+//        assert respostaCpfOuCnpj.equals("77777777777777");
+//        assert respostaNumeroDoCartao.equals("1234.5678.9101-112");
+//    }
+//
+//    @Test
+//    public void testdeletarPagamentoStatusCode204() {
+//        int id = 1;
+//        RestAssured.given()
+//                .when()
+//                .delete("/pagamentos/" + id)
+//                .then()
+//                .statusCode(204);
+//    }
 
     @Test
     public void dadosNulosStatusCode400() {

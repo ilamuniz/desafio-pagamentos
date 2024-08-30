@@ -4,7 +4,7 @@ public interface PagamentoError {
     String MSG_NULO = "A mensagem não pode ser nula.";
     String CODIGO_NULO = "O código não pode ser nulo.";
 
-    static String getCode();
+    String getCode();
 
     String getMessage();
 

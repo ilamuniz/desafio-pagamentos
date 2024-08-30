@@ -89,7 +89,10 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("ano de vencimento");
         }
         // Campo código não aceita letras
-        if (cartao.getCodigoDeSeguranca().length() < 3) {
+        if (cartao.getCodigoDeSeguranca() == null || cartao.getCodigoDeSeguranca().isEmpty()) {
+            throw new ErrosDeSistema.CampoNaoInformado("CVV");
+        }
+        if (cartao.getCodigoDeSeguranca().length() < 3 || cartao.getCodigoDeSeguranca().length() > 4) {
             throw new ErrosDeSistema.CampoNaoInformado("CVV");
         }
         if(!cartao.getCodigoDeSeguranca().matches("\\d+")) {
