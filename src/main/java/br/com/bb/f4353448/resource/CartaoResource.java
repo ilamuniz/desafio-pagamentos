@@ -39,7 +39,7 @@ public class CartaoResource {
     @Counted(name = "listarCartaoPorID_requests_count", description = "Contador de requisicoes para listar dados por ID")
     @Timed(name = "listarCartaoPorID_requests_time", description = "Tempo de requisicoes para listar dados por ID")
     public Response listarCartaoPorID(@PathParam("id") int numeroPagamento) {
-        Optional<Cartao> cartao = cartaoService.listarCartaoPorID(numeroPagamento);
+        Optional<Optional<Cartao>> cartao = cartaoService.listarCartaoPorID(numeroPagamento);
         if (cartao.isPresent()) {
             return Response.ok(cartao.get()).build();
         } else {

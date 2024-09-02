@@ -6,4 +6,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CartaoRepository implements PanacheRepository<Cartao> {
+
+    public Cartao findById(Long id) {
+        return find("id", id).firstResult();
+    }
+
 }
