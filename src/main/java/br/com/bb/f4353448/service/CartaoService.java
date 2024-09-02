@@ -29,8 +29,8 @@ public class CartaoService {
         return cartaoRepository.listAll();
     }
 
-    public Optional<Cartao> listarCartaoPorID(int numeroPagamento) {
-        return Optional.ofNullable(cartaoRepository.findById((long) numeroPagamento));
+    public Optional<Optional<Cartao>> listarCartaoPorID(int numeroPagamento) {
+        return Optional.ofNullable(Optional.ofNullable(cartaoRepository.findById((long) numeroPagamento)));
     }
 
     public Cartao inserirCartao(Cartao cartao) throws ErrosDeSistema.CampoNaoInformado, ErrosDeSistema.PreenchimentoIncorretoCPF, ErrosDeSistema.PreencherSomenteNumeros, ErrosDeSistema.PreenchimentoIncorretoNumeroCartao {
