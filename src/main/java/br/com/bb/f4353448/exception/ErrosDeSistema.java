@@ -1,8 +1,5 @@
 package br.com.bb.f4353448.exception;
 
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
-
 import java.util.Map;
 
 
