@@ -34,11 +34,11 @@ public class ErrosDeSistema {
     }
 
     public static final class PreencherSomenteNumeros extends PagamentoException {
-        public static final String MSG_ERRO = "Por favor, preencher somente com números.";
+        public static final String MSG_ERRO = "Por favor, preencher campo %s somente com números.";
         public static final String COD_ERRO = "422"; // Codigo do erro
 
-        public PreencherSomenteNumeros() {
-            super(COD_ERRO, MSG_ERRO);
+        public PreencherSomenteNumeros(String nomeCampo) {
+            super(COD_ERRO, String.format(MSG_ERRO, nomeCampo), Map.of("NOME_CAMPO", nomeCampo));
         }
     }
 

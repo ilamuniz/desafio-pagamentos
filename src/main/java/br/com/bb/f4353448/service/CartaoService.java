@@ -61,7 +61,7 @@ public class CartaoService {
             throw new ErrosDeSistema.PreenchimentoIncorretoCPF();
         }
         if (!cartao.getCpfOuCnpj().matches("\\d+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros();
+            throw new ErrosDeSistema.PreencherSomenteNumeros("CPF ou CNPJ");
         }
         // Campo pagamento não pode ser nulo
         if (cartao.getPagamento() == null) {
@@ -79,7 +79,7 @@ public class CartaoService {
             throw new ErrosDeSistema.PreenchimentoIncorretoNumeroCartao();
         }
         if (!cartao.getNumeroDoCartao().matches("[\\d-.]+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros();
+            throw new ErrosDeSistema.PreencherSomenteNumeros("número do cartão");
         }
         // Campos mês e ano de expiração não podem ser nulo
         if(cartao.getMesVencimento() > 12 || cartao.getMesVencimento() <= 0) {
@@ -96,7 +96,7 @@ public class CartaoService {
             throw new ErrosDeSistema.CampoNaoInformado("CVV");
         }
         if(!cartao.getCodigoDeSeguranca().matches("\\d+")) {
-            throw new ErrosDeSistema.PreencherSomenteNumeros();
+            throw new ErrosDeSistema.PreencherSomenteNumeros("CVV");
         }
     }
 
