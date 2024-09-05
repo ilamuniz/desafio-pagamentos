@@ -14,8 +14,9 @@ public class CampoNaoInformadoExceptionMapper implements ExceptionMapper<ErrosDe
     @Override
     public Response toResponse(ErrosDeSistema.CampoNaoInformado campoNaoInformado) {
         Map<String, String> errorDetails = new HashMap<>();
-        errorDetails.put("codigo", campoNaoInformado.getCode());
-        errorDetails.put("mensagem", campoNaoInformado.getMessage());
+        errorDetails.put("CODIGO", campoNaoInformado.getCode());
+        errorDetails.put("MENSAGEM", campoNaoInformado.getMessage());
+        errorDetails.put("MOTIVO-ERRO", campoNaoInformado.toString());
 
         return Response.status(Response.Status.BAD_REQUEST)
                 .entity(errorDetails)

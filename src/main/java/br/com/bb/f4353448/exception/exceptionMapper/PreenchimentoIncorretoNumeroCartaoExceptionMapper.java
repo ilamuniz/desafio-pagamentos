@@ -14,8 +14,9 @@ public class PreenchimentoIncorretoNumeroCartaoExceptionMapper implements Except
     @Override
     public Response toResponse(ErrosDeSistema.PreenchimentoIncorretoNumeroCartao preenchimentoIncorretoNumeroCartao) {
         Map<String, String> errorDetails = new HashMap<>();
-        errorDetails.put("codigo", preenchimentoIncorretoNumeroCartao.getCode());
-        errorDetails.put("mensagem", preenchimentoIncorretoNumeroCartao.getMessage());
+        errorDetails.put("CODIGO", preenchimentoIncorretoNumeroCartao.getCode());
+        errorDetails.put("MENSAGEM", preenchimentoIncorretoNumeroCartao.getMessage());
+        errorDetails.put("MOTIVO-ERRO", preenchimentoIncorretoNumeroCartao.toString());
 
         return Response.status(422)
                 .entity(errorDetails)

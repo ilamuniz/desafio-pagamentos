@@ -14,8 +14,9 @@ public class PreenchimentoIncorretoCPFExceptionMapper implements ExceptionMapper
     @Override
     public Response toResponse(ErrosDeSistema.PreenchimentoIncorretoCPF preenchimentoIncorretoCPF) {
         Map<String, String> errorDetails = new HashMap<>();
-        errorDetails.put("codigo", preenchimentoIncorretoCPF.getCode());
-        errorDetails.put("mensagem", preenchimentoIncorretoCPF.getMessage());
+        errorDetails.put("CODIGO", preenchimentoIncorretoCPF.getCode());
+        errorDetails.put("MENSAGEM", preenchimentoIncorretoCPF.getMessage());
+        errorDetails.put("MOTIVO-ERRO", preenchimentoIncorretoCPF.toString());
 
         return Response.status(422)
                 .entity(errorDetails)

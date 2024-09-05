@@ -14,8 +14,9 @@ public class CartaoNaoEncontradoExceptionMapper implements ExceptionMapper<Erros
     @Override
     public Response toResponse(ErrosDeSistema.CartaoNaoEncontrado cartaoNaoEncontrado) {
         Map<String, String> errorDetails = new HashMap<>();
-        errorDetails.put("codigo", cartaoNaoEncontrado.getCode());
-        errorDetails.put("mensagem", cartaoNaoEncontrado.getMessage());
+        errorDetails.put("CODIGO", cartaoNaoEncontrado.getCode());
+        errorDetails.put("MENSAGEM", cartaoNaoEncontrado.getMessage());
+        errorDetails.put("MOTIVO-ERRO", cartaoNaoEncontrado.toString());
 
         return Response.status(Response.Status.NOT_FOUND)
                 .entity(errorDetails)
