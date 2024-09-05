@@ -14,8 +14,9 @@ public class PreencherSomenteNumerosExceptionMapper implements ExceptionMapper<E
     @Override
     public Response toResponse(ErrosDeSistema.PreencherSomenteNumeros preencherSomenteNumeros) {
         Map<String,String> errorDetails = new HashMap<>();
-        errorDetails.put("codigo", preencherSomenteNumeros.getCode());
-        errorDetails.put("mensagem", preencherSomenteNumeros.getMessage());
+        errorDetails.put("CODIGO", preencherSomenteNumeros.getCode());
+        errorDetails.put("MENSAGEM", preencherSomenteNumeros.getMessage());
+        errorDetails.put("MOTIVO-ERRO", preencherSomenteNumeros.toString());
 
         return Response.status(422)
                 .entity(errorDetails)
