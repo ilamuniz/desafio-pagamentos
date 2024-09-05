@@ -29,7 +29,11 @@ public class CartaoService {
         return cartaoRepository.listAll();
     }
 
-    public Optional<Optional<Cartao>> listarCartaoPorID(int numeroPagamento) {
+    public Optional<Optional<Cartao>> listarCartaoPorID(int numeroPagamento) throws ErrosDeSistema.CartaoNaoEncontrado {
+        Cartao cartao = entityManager.find(Cartao.class, numeroPagamento);
+        if (cartao == null) {
+            throw new ErrosDeSistema.CartaoNaoEncontrado(numeroPagamento);
+        }
         return Optional.ofNullable(Optional.ofNullable(cartaoRepository.findById((long) numeroPagamento)));
     }
 
